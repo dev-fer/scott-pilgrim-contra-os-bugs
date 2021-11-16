@@ -42,7 +42,7 @@ Os seguintes dados são representados no programa:
 
 - [Cmake - gerador/compilador de código](https://cmake.org/download/)
 
--  [Allegro5 - biblioteca de jogo](https://objects.githubusercontent.com/github-production-release-asset-2e65be/1005627/0c5d1b00-7f7d-11eb-82f8-17869f83e5e6?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20211116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20211116T203216Z&X-Amz-Expires=300&X-Amz-Signature=b4fde2054bc97c34216e0dad227bfe4f4ead0e343062f7696673d1f670d40238&X-Amz-SignedHeaders=host&actor_id=64899498&key_id=0&repo_id=1005627&response-content-disposition=attachment%3B%20filename%3Dallegro-i686-w64-mingw32-gcc-10.2.0-posix-dwarf-static-5.2.7.0.zip&response-content-type=application%2Foctet-stream)
+-  [Allegro5 - biblioteca de jogo](https://github.com/liballeg/allegro5/releases)
 
 ## 🤔 Como utilizar o projeto?
 
