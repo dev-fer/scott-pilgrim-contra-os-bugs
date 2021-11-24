@@ -11,7 +11,7 @@ void settings(int *cord_cursor_x, int *cord_cursor_y)
     ALLEGRO_FONT *menu_item = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 18, 0);
     ALLEGRO_SAMPLE *click = al_load_sample("../src/assets/sounds/Click.ogg");
     ALLEGRO_EVENT_QUEUE *menu_event_queue = al_create_event_queue();
-    ALLEGRO_FONT *settings_item = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 18, 0);
+    ALLEGRO_FONT *settings_item = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 24, 0);
     ALLEGRO_FONT *escape = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 12, 0);
 
     *cord_cursor_x = (width_display / 2) - 120;
