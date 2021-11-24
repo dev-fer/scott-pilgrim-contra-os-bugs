@@ -26,19 +26,33 @@ void game(void)
     ALLEGRO_FONT *botao = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 30, 0);
 
     verifyAllegroFunction(al_init_image_addon(), "couldn't initialize image addon");
-    ALLEGRO_BITMAP *player = al_load_bitmap("../src/assets/images/player.png");
     ALLEGRO_BITMAP *cena = al_load_bitmap("../src/assets/images/cena.png");
+    ALLEGRO_BITMAP *player_bg = al_load_bitmap("../src/assets/images/player_bg.png");
+    ALLEGRO_BITMAP *vida_completa = al_load_bitmap("../src/assets/images/vida_completa.png");
+    ALLEGRO_BITMAP *inimigo_bg = al_load_bitmap("../src/assets/images/inimigo_1.png");
+    ALLEGRO_BITMAP *inimigo_fugir = al_load_bitmap("../src/assets/images/inimigo_fugir.png");
+    ALLEGRO_BITMAP *inimigo_defender = al_load_bitmap("../src/assets/images/inimigo_defender.png");
+    ALLEGRO_BITMAP *inimigo_atacar = al_load_bitmap("../src/assets/images/inimigo_atacar.png");
+    ALLEGRO_BITMAP *player = al_load_bitmap("../src/assets/images/player.png");
     ALLEGRO_BITMAP *atacar = al_load_bitmap("../src/assets/images/atacar.png");
     ALLEGRO_BITMAP *defender = al_load_bitmap("../src/assets/images/defender.png");
     ALLEGRO_BITMAP *correr = al_load_bitmap("../src/assets/images/correr.png");
     ALLEGRO_BITMAP *caixa = al_load_bitmap("../src/assets/images/caixa.png");
     ALLEGRO_BITMAP *compilar = al_load_bitmap("../src/assets/images/compilar.png");
+    ALLEGRO_BITMAP *dot = al_load_bitmap("../src/assets/images/dot.png");
 
     verifyAllegroFunction(player, "couldn't initialize player");
+    verifyAllegroFunction(vida_completa, "couldn't initialize player");
+    verifyAllegroFunction(inimigo_bg, "couldn't initialize player");
+    verifyAllegroFunction(inimigo_fugir, "couldn't initialize player");
+    verifyAllegroFunction(inimigo_defender, "couldn't initialize player");
+    verifyAllegroFunction(inimigo_atacar, "couldn't initialize player");
+    verifyAllegroFunction(player_bg, "couldn't initialize player");
     verifyAllegroFunction(cena, "couldn't initialize player");
     verifyAllegroFunction(atacar, "couldn't initialize player");
     verifyAllegroFunction(defender, "couldn't initialize player");
     verifyAllegroFunction(correr, "couldn't initialize player");
+    verifyAllegroFunction(dot, "couldn't initialize player");
 
     verifyAllegroFunction(al_init_primitives_addon(), "primitives");
 
@@ -65,20 +79,32 @@ void game(void)
     sourceY = 0;
 
     float atacarX, atacarY;
-    atacarX = 25;
-    atacarY = 250;
+    atacarX = 70;
+    atacarY = 400;
 
     float defenderX, defenderY;
-    defenderX = 25;
-    defenderY = 400;
+    defenderX = 70;
+    defenderY = 530;
 
     float correrX, correrY;
-    correrX = 25;
-    correrY = 550;
+    correrX = 70;
+    correrY = 660;
+
+    float fugirX, fugirY;
+    fugirX = (width_display - 170);
+    fugirY = 420;
+
+    float iniDefenderX, iniDefenderY;
+    iniDefenderX = (width_display - 170);
+    iniDefenderY = 700;
+
+    float iniAtacarX, iniAtacarY;
+    iniAtacarX = (width_display - 170);
+    iniAtacarY = 560;
 
     float caixaX, caixaY;
     caixaX = 300;
-    caixaY = 850;
+    caixaY = 880;
 
     float compilarX, compilarY;
     compilarX = 1200;
@@ -145,12 +171,6 @@ void game(void)
                 for(int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
-
-                if (sourceX >= al_get_bitmap_width(player)) {
-                    sourceX = 0;
-                }
-
-
                 al_get_mouse_state(&state);
                 if (state.buttons & 1) {
                     interacao = true;
@@ -161,7 +181,6 @@ void game(void)
                     interatividadeCorrer = false;
 
                 }
-
 
                 if (x >= atacarX && x <= (atacarX + 193) && y >= atacarY && y <= (atacarY + 97) && interacao && !interatividadeDefender && !interatividadeCorrer) {
                      atacarX = (x - 50);
@@ -230,11 +249,19 @@ void game(void)
             al_draw_bitmap(defender, defenderX, defenderY, 0);
             al_draw_bitmap(correr, correrX, correrY, 0);
 
+            al_draw_bitmap(inimigo_fugir, fugirX, fugirY, 0);
+            al_draw_bitmap(dot, (width_display - 128), fugirY + 104, 0);
+            al_draw_bitmap(inimigo_atacar, iniAtacarX, iniAtacarY, 0);
+            al_draw_bitmap(dot, (width_display - 128), iniAtacarY + 104, 0);
+            al_draw_bitmap(inimigo_defender, iniDefenderX, iniDefenderY, 0);
 
             al_draw_textf(botao, al_map_rgb(255, 255, 255), (width_display/2) - 400, 100, 0, "ACERTE A SEQUÊNCIA PARA PASSAR DE FASE");
             al_draw_textf(botao, al_map_rgb(255, 255, 255), (width_display/2), 160, 0, "FASE 1");
 
             al_draw_bitmap(player, 600, 530, 0);
+            al_draw_bitmap(inimigo_bg, width_display - 330, 200, 0);
+            al_draw_bitmap(player_bg, 80, 200, 0);
+            al_draw_bitmap(vida_completa, 360, 280, 0);
 
             al_flip_display();
 
@@ -249,6 +276,13 @@ void game(void)
     al_destroy_bitmap(caixa);
     al_destroy_bitmap(compilar);
     al_destroy_bitmap(player);
+    al_destroy_bitmap(inimigo_bg);
+    al_destroy_bitmap(inimigo_fugir);
+    al_destroy_bitmap(inimigo_atacar);
+    al_destroy_bitmap(inimigo_defender);
+    al_destroy_bitmap(dot);
+    al_destroy_bitmap(player_bg);
+    al_destroy_bitmap(vida_completa);
 
     al_destroy_font(font);
     al_destroy_timer(timer);
