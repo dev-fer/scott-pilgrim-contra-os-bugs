@@ -140,8 +140,6 @@ void fase4(void) {
                     bool mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
 
                     if (mouseRangeCard && interacaoCard) {
-
-
                         if (contMiniCard < 4) {
                             miniCards[contMiniCard] = create_mini_card(cards[i].urlMiniCard, positionMiniCardX, 800);
                             respostaJogador[contMiniCard] = i;
@@ -185,19 +183,17 @@ void fase4(void) {
                         }
                     }
 
-                    if (mouseRangeResetar && interacaoButton) {
-                            respostaJogador[0] = 0;
-                            respostaJogador[1] = 0;
-                            respostaJogador[2] = 0;
-                            contMiniCard = 0;
-                            positionMiniCardX = 614;
-                            al_destroy_bitmap(miniCards[0].card);
-                            al_destroy_bitmap(miniCards[1].card);
-                            al_destroy_bitmap(miniCards[2].card);
-                            al_destroy_bitmap(miniCards[3].card);
-                            interacaoButton = false;
-                            break;
-
+                    if (mouseRangeResetar && interacaoButton && contMiniCard > 0) {
+                        respostaJogador[0] = 0;
+                        respostaJogador[1] = 0;
+                        respostaJogador[2] = 0;
+                        contMiniCard = 0;
+                        positionMiniCardX = 614;
+                        for (int i = 0; i < contMiniCard; i++) {
+                            al_destroy_bitmap(miniCards[i].card);
+                        }
+                        interacaoButton = false;
+                        break;
                     }
 
                     if (mouseRangeButton) {
@@ -282,7 +278,6 @@ void fase4(void) {
             for (int i = 0; i < 3; i++) {
                 al_draw_bitmap_region(buttons[i].button, buttons[i].currentFrame * buttons[i].frameWidth, 0, buttons[i].frameWidth, buttons[i].frameHeight, buttons[i].buttonX, buttons[i].buttonY, 0);
             }
-
 
             al_draw_bitmap(cursor, x, y, 0);
 
