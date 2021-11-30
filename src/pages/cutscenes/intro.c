@@ -6,8 +6,8 @@ void video_display(ALLEGRO_VIDEO *video, ALLEGRO_FONT *skip)
 
     double timenow = al_get_time();
 
-    const int width = 640;
-    const int height = 480;
+    const int width = 1280;
+    const int height = 720;
 
     if (!frame)
         return;
@@ -16,7 +16,7 @@ void video_display(ALLEGRO_VIDEO *video, ALLEGRO_FONT *skip)
 
     if (timenow > 4.508822)
     {
-        al_draw_text(skip, al_map_rgb(color[0], color[1], color[2]), (width_display / 2) + (width / 2), (height_display / 2) + (height / 2) - 30, ALLEGRO_ALIGN_RIGHT, "PRESSIONE ESPAÇO PARA PULAR A INTRO");
+        al_draw_text(skip, al_map_rgb(color[0], color[1], color[2]), (width_display / 2) + (width / 2), (height_display / 2) + (height / 2) + 30, ALLEGRO_ALIGN_RIGHT, "PRESSIONE ESPAÇO PARA PULAR A INTRO");
     }
 
     al_flip_display();
@@ -32,7 +32,7 @@ void intro()
 
     ALLEGRO_VIDEO *intro_vid = al_open_video("../src/assets/movies/intro.ogv");
     ALLEGRO_EVENT vid_ev;
-    ALLEGRO_FONT *skip = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 18, 0);
+    ALLEGRO_FONT *skip = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 20, 0);
 
     ALLEGRO_EVENT_QUEUE *vid_event_queue = al_create_event_queue();
     ALLEGRO_TIMER *fps_timer = al_create_timer(1.0 / fps);

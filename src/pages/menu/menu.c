@@ -128,7 +128,7 @@ void menu(void)
     al_destroy_sample(swish);
     al_destroy_sample_instance(music);
     if (game_on == true)
-        game();
+        fase1();
     if (settings_on == true)
         settings(&cord_cursor_x, &cord_cursor_y);
 }
