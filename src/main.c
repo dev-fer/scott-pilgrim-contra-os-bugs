@@ -48,9 +48,8 @@ int main(void)
     al_init_ttf_addon();
     al_init_video_addon();
 
-    // intro();
-    // menu();
-    fase1();
+    intro();
+    menu();
 
 	al_destroy_display(display);
 	al_destroy_timer(fps_timer);

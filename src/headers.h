@@ -28,6 +28,7 @@ void roxanneintro(void);
 void roxannefinal(void);
 void toddintro(void);
 void toddfinal(void);
+void final(void);
 void menu(void);
 void settings(int *cord_cursor_x, int *cord_cursor_y);
 int verifyAllegroFunction(bool func, const char *message);

@@ -15,6 +15,7 @@ target_sources(
   src/pages/cutscenes/roxannefinal.c
   src/pages/cutscenes/toddintro.c
   src/pages/cutscenes/toddfinal.c
+  src/pages/cutscenes/final.c
   src/pages/cutscenes/tutorial.c
   src/pages/transition/end.c
   src/pages/menu/menu.c

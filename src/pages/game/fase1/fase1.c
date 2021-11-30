@@ -63,8 +63,8 @@ Button create_button(char *urlButton, int maxFrame, int frameDelay, int frameWid
 }
 
 void fase1(void) {
-    // tutorial();
-    // mathewintro();
+    tutorial();
+    mathewintro();
     verifyAllegroFunction(al_init(), "allegro");
     verifyAllegroFunction(al_install_keyboard(), "keyboard");
     verifyAllegroFunction(al_install_mouse(), "mouse");
@@ -92,6 +92,10 @@ void fase1(void) {
     ALLEGRO_BITMAP *painel = al_load_bitmap("../src/assets/images/painel.png");
     ALLEGRO_BITMAP *cursor = al_load_bitmap("../src/assets/images/cursor.png");
 
+    ALLEGRO_SAMPLE *themebackground = al_load_sample("../src/assets/sounds/Matthew.ogg");
+    ALLEGRO_SAMPLE_INSTANCE *music = al_create_sample_instance(themebackground);
+    al_attach_sample_instance_to_mixer(music, al_get_default_mixer());
+
     verifyAllegroFunction(bg, "couldn't initialize player");
     verifyAllegroFunction(cursor, "couldn't initialize player");
 
@@ -108,13 +112,26 @@ void fase1(void) {
     bool interatividadeCorrer = false;
     bool interacaoCard = false;
     bool interacaoButton = false;
+    bool mostraGuia = true;
     ALLEGRO_EVENT event;
+
+    float scottX, scottY, scottT;
+    scottX = 474;
+    scottY = 700;
+    scottT = 700;
+
+    float bossX, bossY;
+    bossX = 1498;
+    bossY = 576;
 
     Card cards[4];
     EnemyCard enemyCards[4];
     MiniCard miniCards[4];
     Button buttons[3];
     CharacterCard characterCards[4];
+    CharacterCard cardText[2];
+    CharacterCard guia[0];
+    Button power[2];
 
     cards[0] = create_card("../src/assets/images/correr_animacao.png", 21, 3, 247, 328, 16, 5, 35, 19, 440, 74, "../src/assets/images/minicard_correr.png");
     cards[1] = create_card("../src/assets/images/atacar_animacao.png", 30, 3, 374, 438, 61, 116, 116, 19, 642, -36, "../src/assets/images/minicard_atacar.png");
@@ -130,10 +147,18 @@ void fase1(void) {
     buttons[1] = create_button("../src/assets/images/reset.png", 8, 2, 49, 51, 164, 951);
     buttons[2] = create_button("../src/assets/images/dica.png", 8, 2, 49, 51, 223, 951);
 
+    power[0] = create_button("../src/assets/images/power.png", 60, 4, 640, 320, 720, 446);
+    power[1] = create_button("../src/assets/images/attack.png", 7, 2, 298, 160, 860, 520);
+
     characterCards[0] = create_character_card("../src/assets/images/scott_perfil.png", 69, 97);
-    characterCards[1] = create_character_card("../src/assets/images/scott_mini.png", 474, 700);
-    characterCards[2] = create_character_card("../src/assets/images/matthew_perfil.png", 1473, 720);
-    characterCards[3] = create_character_card("../src/assets/images/matthew_mini.png", 1498, 576);
+    characterCards[1] = create_character_card("../src/assets/images/matthew_perfil.png", 1473, 720);
+    characterCards[2] = create_character_card("../src/assets/images/scott_mini.png", scottX, scottY);
+    characterCards[3] = create_character_card("../src/assets/images/matthew_mini.png", bossX, bossY);
+
+    cardText[0] = create_character_card("../src/assets/images/next_level.png", 650, 323);
+    cardText[1] = create_character_card("../src/assets/images/repeat_level.png", 650, 323);
+
+    guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
 
     int resultadoFase[3] = {0, 3, 1};
     int respostaJogador[4];
@@ -142,10 +167,17 @@ void fase1(void) {
     x = 100;
     y = 100;
 
+    bool resultado = false;
+    bool continueAnimacaoScott = true;
+    bool continueAnimacaoBoss = true;
+    bool travaCompilar = true;
+
     int positionMiniCardX;
     positionMiniCardX = 614;
 
     int contMiniCard = 0;
+    int animacao = 0;
+    int animaboss = 0;
 
 #define KEY_SEEN 1
 #define KEY_RELEASED 2
@@ -165,11 +197,35 @@ void fase1(void) {
 
     while (!done) {
         al_wait_for_event(queue, &event);
+        al_play_sample_instance(music);
 
         switch (event.type) {
             case ALLEGRO_EVENT_TIMER:
-                if (key[ALLEGRO_KEY_ESCAPE])
-                    done = true;
+                if (key[ALLEGRO_KEY_ESCAPE]) {
+                }
+
+                if (key[ALLEGRO_KEY_ENTER]) {
+                    if (resultado && animaboss == 6) {
+                        fase_dois_on = true;
+                        done = true;
+                        break;
+                    }
+                    if (!resultado && !travaCompilar) {
+                        respostaJogador[0] = 0;
+                        respostaJogador[1] = 0;
+                        respostaJogador[2] = 0;
+                        contMiniCard = 0;
+                        positionMiniCardX = 614;
+
+                        for (int i = 0; i < contMiniCard; i++) {
+                            al_destroy_bitmap(miniCards[i].card);
+                        }
+
+                        interacaoButton = false;
+                        travaCompilar = true;
+                        break;
+                    }
+                }
 
                 x += dx;
                 y += dy;
@@ -227,21 +283,12 @@ void fase1(void) {
                     bool mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
                     bool mouseRangeCompilar = buttons[0].buttonX && x >= buttons[0].buttonX && x <= (buttons[0].buttonX + buttons[0].frameWidth) && y >= buttons[0].buttonY && y <= (buttons[0].buttonY + buttons[0].frameHeight);
                     bool mouseRangeResetar = buttons[1].buttonX && x >= buttons[1].buttonX && x <= (buttons[1].buttonX + buttons[1].frameWidth) && y >= buttons[1].buttonY && y <= (buttons[1].buttonY + buttons[1].frameHeight);
+                    bool mouseRangeGuia = buttons[2].buttonX && x >= buttons[2].buttonX && x <= (buttons[2].buttonX + buttons[2].frameWidth) && y >= buttons[2].buttonY && y <= (buttons[2].buttonY + buttons[2].frameHeight);
 
-                    if (mouseRangeCompilar && interacaoButton) {
-                        bool resultado = respostaJogador[0] == resultadoFase[0] && respostaJogador[1] == resultadoFase[1] && respostaJogador[2] == resultadoFase[2];
-
-                        if (resultado) {
-                            fase_dois_on = true;
-                            done = true;
-                            characterCards[1].cardX += 128;
-                            characterCards[1].cardY -= 128;
-                            interacaoButton = false;
-                            break;
-                        } else {
-                            printf("%s, Perdeu!");
-                            interacaoButton = false;
-                        }
+                    if (mouseRangeCompilar && interacaoButton && travaCompilar) {
+                        resultado = respostaJogador[0] == resultadoFase[0] && respostaJogador[1] == resultadoFase[1] && respostaJogador[2] == resultadoFase[2];
+                        interacaoButton = false;
+                        travaCompilar = false;
                     }
 
                     if (mouseRangeResetar && interacaoButton && contMiniCard > 0) {
@@ -259,6 +306,11 @@ void fase1(void) {
                         break;
                     }
 
+                    if (mouseRangeGuia && interacaoButton && !mostraGuia) {
+                        mostraGuia = true;
+                        interacaoButton = false;
+                    }
+
                     if (mouseRangeButton) {
                         if (++buttons[i].frameCount >= buttons[i].frameDelay) {
                             if (++buttons[i].currentFrame >= buttons[i].maxFrame)
@@ -271,6 +323,89 @@ void fase1(void) {
                         buttons[i].frameCount = 0;
                     }
                 }
+
+                for (int i = 0; i < 2; i++) {
+                    if (++power[i].frameCount >= power[i].frameDelay && animaboss == 3 || ++power[i].frameCount >= power[i].frameDelay && animaboss == 5) {
+                        if (++power[i].currentFrame >= power[i].maxFrame)
+                            power[i].currentFrame = 0;
+
+                        power[i].frameCount = 0;
+                    }
+                }
+
+                if (resultado && continueAnimacaoScott) {
+                    if (animacao == 0) {
+                        scottY -= 4;
+                    } else if (animacao == 1) {
+                        scottX += 4;
+                    } else if (animacao == 2) {
+                        scottY -= 6;
+                    } else if (animacao == 3 && animaboss > 3) {
+                        scottY += 4;
+                    }
+                }
+
+                if (scottY < 700 - 128 && animacao == 0) {
+                    animacao = 1;
+                }
+
+                if (scottX > 474 + 128 * 3 && animacao == 1) {
+                    animacao = 2;
+                }
+
+                if (scottY < 700 - 124 * 2 && animacao == 2) {
+                    animacao = 3;
+                }
+
+                if (animaboss == 3) {
+                    scottT += 1;
+                    if (scottT > 870) {
+                        animaboss = 4;
+                    }
+                }
+
+                if (animaboss == 5) {
+                    scottT += 4;
+                    if (scottT > 900) {
+                        animaboss = 6;
+                    }
+                }
+
+                if (scottY > 570 && animacao == 3) {
+                    animacao = 4;
+                }
+
+                if (resultado && continueAnimacaoBoss) {
+                    // fase_dois_on = true;
+                    // done = true;
+                    if (animaboss == 0) {
+                        bossY -= 4;
+                    } else if (animaboss == 1) {
+                        bossX -= 4;
+                    } else if (animaboss == 2) {
+                        bossY += 4;
+                    } else if (animaboss == 4) {
+                        bossX -= 4;
+                    }
+                }
+
+                if (bossY < 576 - 128 && animaboss == 0) {
+                    animaboss = 1;
+                }
+
+                if (bossX < 1498 - 124 * 2 && animaboss == 1) {
+                    animaboss = 2;
+                }
+
+                if (bossY > 576 && animaboss == 2) {
+                    animaboss = 3;
+                }
+
+                if (bossX < 990 && animaboss == 4) {
+                    continueAnimacaoBoss = false;
+                    animaboss = 5;
+                }
+
                 redraw = true;
                 break;
 
@@ -283,6 +418,10 @@ void fase1(void) {
                 bool mouseRangeCard = false;
                 bool mouseRangeButton = false;
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                if (mostraGuia) {
+                    mostraGuia = false;
+                }
+
                 for (int i = 0; i < 4; i++) {
                     mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
 
@@ -320,6 +459,7 @@ void fase1(void) {
 
         if (redraw && al_is_event_queue_empty(queue)) {
             al_clear_to_color(al_map_rgb(0, 0, 0));
+
             al_draw_bitmap(bg, 0, 0, 0);
             al_draw_filled_rectangle(639, 920, 1224, 926, al_map_rgb(237, 133, 71));
 
@@ -329,8 +469,14 @@ void fase1(void) {
             for (int i = 0; i < 4; i++) {
                 al_draw_bitmap_region(cards[i].card, cards[i].currentFrame * cards[i].frameWidth, 0, cards[i].frameWidth, cards[i].frameHeight, cards[i].cardX, cards[i].cardY, 0);
                 al_draw_bitmap(enemyCards[i].card, enemyCards[i].cardX, enemyCards[i].cardY, 0);
+            }
+
+            for (int i = 0; i < 2; i++) {
                 al_draw_bitmap(characterCards[i].card, characterCards[i].cardX, characterCards[i].cardY, 0);
             }
+
+            al_draw_bitmap(characterCards[2].card, scottX, scottY, 0);
+            al_draw_bitmap(characterCards[3].card, bossX, bossY, 0);
 
             if (contMiniCard > 0) {
                 for (int i = 0; i < contMiniCard; i++) {
@@ -342,12 +488,35 @@ void fase1(void) {
                 al_draw_bitmap_region(buttons[i].button, buttons[i].currentFrame * buttons[i].frameWidth, 0, buttons[i].frameWidth, buttons[i].frameHeight, buttons[i].buttonX, buttons[i].buttonY, 0);
             }
 
+            if (animaboss == 3) {
+                al_draw_bitmap_region(power[0].button, power[0].currentFrame * power[0].frameWidth, 0, power[0].frameWidth, power[0].frameHeight, power[0].buttonX, power[0].buttonY, 0);
+            }
+
+            if (animaboss == 5) {
+                al_draw_bitmap_region(power[1].button, power[1].currentFrame * power[1].frameWidth, 0, power[1].frameWidth, power[1].frameHeight, power[1].buttonX, power[1].buttonY, 0);
+            }
+
+            if (resultado && animaboss == 6) {
+                al_draw_bitmap(cardText[0].card, cardText[0].cardX, cardText[0].cardY, 0);
+            }
+
+              if (!resultado && !travaCompilar) {
+                al_draw_bitmap(cardText[1].card, cardText[1].cardX, cardText[1].cardY, 0);
+            }
+
+            if(mostraGuia) {
+            al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
+
+            }
+
             al_draw_bitmap(cursor, x, y, 0);
 
             al_flip_display();
 
             redraw = false;
         }
+
+        al_set_sample_instance_playing(music, 1);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -366,10 +535,17 @@ void fase1(void) {
         al_destroy_bitmap(buttons[i].button);
     }
 
+    for (int i = 0; i < 2; i++) {
+        al_destroy_bitmap(power[i].button);
+        al_destroy_bitmap(cardText[i].card);
+    }
+
     al_destroy_bitmap(bg);
     al_destroy_bitmap(labirinto);
     al_destroy_bitmap(painel);
     al_destroy_bitmap(cursor);
+
+    al_destroy_sample_instance(music);
 
     al_destroy_font(font);
     al_destroy_timer(timer);
