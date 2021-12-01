@@ -487,7 +487,7 @@ void fase2(void) {
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
     if (fase_tres_on == true)
-        final();
         lucasleefinal();
+        final();
         menu();
 }

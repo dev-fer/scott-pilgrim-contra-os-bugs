@@ -112,7 +112,7 @@ void fase1(void) {
     bool interatividadeCorrer = false;
     bool interacaoCard = false;
     bool interacaoButton = false;
-    bool mostraGuia = true;
+    // bool mostraGuia = true;
     ALLEGRO_EVENT event;
 
     float scottX, scottY, scottT;
@@ -130,7 +130,7 @@ void fase1(void) {
     Button buttons[3];
     CharacterCard characterCards[4];
     CharacterCard cardText[2];
-    CharacterCard guia[0];
+    // CharacterCard guia[0];
     Button power[2];
 
     cards[0] = create_card("../src/assets/images/correr_animacao.png", 21, 3, 247, 328, 16, 5, 35, 19, 440, 74, "../src/assets/images/minicard_correr.png");
@@ -158,7 +158,7 @@ void fase1(void) {
     cardText[0] = create_character_card("../src/assets/images/next_level.png", 650, 323);
     cardText[1] = create_character_card("../src/assets/images/repeat_level.png", 650, 323);
 
-    guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
+    // guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
 
     int resultadoFase[3] = {0, 3, 1};
     int respostaJogador[4];
@@ -283,7 +283,7 @@ void fase1(void) {
                     bool mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
                     bool mouseRangeCompilar = buttons[0].buttonX && x >= buttons[0].buttonX && x <= (buttons[0].buttonX + buttons[0].frameWidth) && y >= buttons[0].buttonY && y <= (buttons[0].buttonY + buttons[0].frameHeight);
                     bool mouseRangeResetar = buttons[1].buttonX && x >= buttons[1].buttonX && x <= (buttons[1].buttonX + buttons[1].frameWidth) && y >= buttons[1].buttonY && y <= (buttons[1].buttonY + buttons[1].frameHeight);
-                    bool mouseRangeGuia = buttons[2].buttonX && x >= buttons[2].buttonX && x <= (buttons[2].buttonX + buttons[2].frameWidth) && y >= buttons[2].buttonY && y <= (buttons[2].buttonY + buttons[2].frameHeight);
+                    // bool mouseRangeGuia = buttons[2].buttonX && x >= buttons[2].buttonX && x <= (buttons[2].buttonX + buttons[2].frameWidth) && y >= buttons[2].buttonY && y <= (buttons[2].buttonY + buttons[2].frameHeight);
 
                     if (mouseRangeCompilar && interacaoButton && travaCompilar) {
                         resultado = respostaJogador[0] == resultadoFase[0] && respostaJogador[1] == resultadoFase[1] && respostaJogador[2] == resultadoFase[2];
@@ -306,10 +306,10 @@ void fase1(void) {
                         break;
                     }
 
-                    if (mouseRangeGuia && interacaoButton && !mostraGuia) {
-                        mostraGuia = true;
-                        interacaoButton = false;
-                    }
+                    // if (mouseRangeGuia && interacaoButton && !mostraGuia) {
+                    //     mostraGuia = true;
+                    //     interacaoButton = false;
+                    // }
 
                     if (mouseRangeButton) {
                         if (++buttons[i].frameCount >= buttons[i].frameDelay) {
@@ -418,9 +418,9 @@ void fase1(void) {
                 bool mouseRangeCard = false;
                 bool mouseRangeButton = false;
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-                if (mostraGuia) {
-                    mostraGuia = false;
-                }
+                // if (mostraGuia) {
+                //     mostraGuia = false;
+                // }
 
                 for (int i = 0; i < 4; i++) {
                     mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
@@ -504,10 +504,10 @@ void fase1(void) {
                 al_draw_bitmap(cardText[1].card, cardText[1].cardX, cardText[1].cardY, 0);
             }
 
-            if(mostraGuia) {
-            al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
+            // if(mostraGuia) {
+            // al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
 
-            }
+            // }
 
             al_draw_bitmap(cursor, x, y, 0);
 
@@ -544,6 +544,7 @@ void fase1(void) {
     al_destroy_bitmap(labirinto);
     al_destroy_bitmap(painel);
     al_destroy_bitmap(cursor);
+    // al_destroy_bitmap(guia[0].card);
 
     al_destroy_sample_instance(music);
 
