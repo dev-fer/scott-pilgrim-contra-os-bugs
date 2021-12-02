@@ -371,28 +371,28 @@ void f2_animationsResult(void) {
 
     if (f2_contAnimacaoEnemy == 0 && f2_resultado) {
         f2_awaitAnimation += 1;
-        if (f2_awaitAnimation > 200) {
+        if (f2_awaitAnimation > 100) {
             f2_contAnimacaoEnemy = 1;
         }
     }
 
     if (f2_contAnimacaoEnemy == 3 && f2_resultado) {
-        f2_awaitAnimation += 1;
-        if (f2_awaitAnimation > 280) {
+        f2_awaitAnimation += 3;
+        if (f2_awaitAnimation > 330) {
             f2_contAnimacaoEnemy = 4;
         }
     }
 
     if (f2_contAnimacaoEnemy == 4 && f2_resultado) {
-        f2_awaitAnimation += 1;
-        if (f2_awaitAnimation > 300) {
+        f2_awaitAnimation += 3;
+        if (f2_awaitAnimation > 400) {
             f2_contAnimacaoEnemy = 5;
         }
     }
 
     if (f2_contAnimacaoEnemy == 5) {
         f2_awaitAnimation += 4;
-        if (f2_awaitAnimation > 360) {
+        if (f2_awaitAnimation > 460) {
             f2_contAnimacaoEnemy = 6;
         }
     }
