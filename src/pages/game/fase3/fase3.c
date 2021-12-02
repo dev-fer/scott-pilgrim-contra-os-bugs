@@ -42,8 +42,7 @@ void fase3(void) {
 
     bool done = false;
     bool redraw = true;
-    bool active = true;
-    bool interatividadeCorrer = false;
+
     bool interacaoCard = false;
     bool interacaoButton = false;
     ALLEGRO_EVENT event;
