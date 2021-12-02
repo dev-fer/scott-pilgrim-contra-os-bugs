@@ -90,9 +90,8 @@ void fase2(void) {
                 for (int i = 0; i < 4; i++) {
                     if (i < 3) {
                         f2_mouseRangeButtons(i);
-                    }
-                    if (i < 2) {
                         f2_powerFrames(i);
+
                     }
                     f2_mouseRangeCards(i);
                 }
