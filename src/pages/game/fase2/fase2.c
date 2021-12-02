@@ -191,6 +191,10 @@ void fase2(void) {
                 al_draw_bitmap(f2_cardText[1].card, f2_cardText[1].cardX, f2_cardText[1].cardY, 0);
             }
 
+             if (f2_mostraGuia) {
+                al_draw_bitmap(f2_guia[0].card, f2_guia[0].cardX, f2_guia[0].cardY, 0);
+            }
+
             al_draw_bitmap(cursor, f2_x, f2_y, 0);
 
             al_flip_display();
