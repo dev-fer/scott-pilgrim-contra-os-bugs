@@ -1,8 +1,8 @@
 #include "fase1.h"
 
 void fase1(void) {
-    // tutorial();
-    // mathewintro();
+    tutorial();
+    mathewintro();
 
     initialize();
 
@@ -40,6 +40,9 @@ void fase1(void) {
 
     guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
 
+    pause[0] = create_character_card("../src/assets/images/pause_continuar.png", 0, 0);
+    pause[1] = create_character_card("../src/assets/images/pause_menu.png", 0, 0);
+
 #define KEY_SEEN 1
 #define KEY_RELEASED 2
 
@@ -55,9 +58,37 @@ void fase1(void) {
         switch (event.type) {
             case ALLEGRO_EVENT_TIMER:
                 if (key[ALLEGRO_KEY_ESCAPE]) {
+                    if (!mostraPause) {
+                        mostraPause = true;
+                    }
+                }
+                if (key[ALLEGRO_KEY_DOWN]) {
+                      if (mostraPause && !pauseMenu) {
+                        pauseMenu = true;
+                        pauseContinuar = false;
+                    }
+                }
+                if (key[ALLEGRO_KEY_UP]) {
+                      if (mostraPause && !pauseContinuar) {
+                        pauseContinuar = true;
+                        pauseMenu = false;
+                    }
                 }
 
                 if (key[ALLEGRO_KEY_ENTER]) {
+                    if (mostraPause && pauseContinuar) {
+                        mostraPause = false;
+                        break;
+                    }
+                    if (mostraPause && pauseMenu) {
+                        mostraPause = false;
+                        pauseMenu = false;
+                        pauseContinuar = true;
+                        done = true;
+                        menu_on = true;
+                        break;
+                    }
+
                     if (resultado && contAnimacaoEnemy == 6) {
                         fase_dois_on = true;
                         done = true;
@@ -188,6 +219,12 @@ void fase1(void) {
 
             if (mostraGuia) {
                 al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
+            }
+
+            if (mostraPause && pauseContinuar) {
+                  al_draw_bitmap(pause[0].card, pause[0].cardX, pause[0].cardY, 0);
+            } else if (mostraPause && pauseMenu) {
+                  al_draw_bitmap(pause[1].card, pause[1].cardX, pause[1].cardY, 0);
             }
 
             al_draw_bitmap(cursor, x, y, 0);
@@ -436,6 +473,10 @@ void destroyFase(void) {
 
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    if (fase_dois_on == true)
+    if (fase_dois_on == true) {
         fase2();
+    }
+    if (menu_on == true) {
+        menu();
+    }
 }

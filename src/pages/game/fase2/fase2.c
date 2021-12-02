@@ -1,8 +1,8 @@
 #include "fase2.h"
 
 void fase2(void) {
-    // mathewfinal();
-    // lucasleeintro();
+    mathewfinal();
+    lucasleeintro();
 
     initialize();
 
@@ -41,6 +41,9 @@ void fase2(void) {
 
     f2_guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
 
+    f2_pause[0] = create_character_card("../src/assets/images/pause_continuar.png", 0, 0);
+    f2_pause[1] = create_character_card("../src/assets/images/pause_menu.png", 0, 0);
+
 #define KEY_SEEN 1
 #define KEY_RELEASED 2
 
@@ -56,9 +59,37 @@ void fase2(void) {
         switch (f2_event.type) {
             case ALLEGRO_EVENT_TIMER:
                 if (key[ALLEGRO_KEY_ESCAPE]) {
+                    if (!f2_mostraPause) {
+                        f2_mostraPause = true;
+                    }
+                }
+                if (key[ALLEGRO_KEY_DOWN]) {
+                    if (f2_mostraPause && !f2_pauseMenu) {
+                        f2_pauseMenu = true;
+                        f2_pauseContinuar = false;
+                    }
+                }
+                if (key[ALLEGRO_KEY_UP]) {
+                    if (f2_mostraPause && !f2_pauseContinuar) {
+                        f2_pauseContinuar = true;
+                        f2_pauseMenu = false;
+                    }
                 }
 
                 if (key[ALLEGRO_KEY_ENTER]) {
+                    if (f2_mostraPause && f2_pauseContinuar) {
+                        f2_mostraPause = false;
+                        break;
+                    }
+                    if (f2_mostraPause && f2_pauseMenu) {
+                        f2_mostraPause = false;
+                        f2_pauseMenu = false;
+                        f2_pauseContinuar = true;
+                        f2_done = true;
+                        f2_menu_on = true;
+                        break;
+                    }
+
                     if (f2_resultado && f2_contAnimacaoEnemy == 6) {
                         fase_tres_on = true;
                         f2_done = true;
@@ -91,7 +122,6 @@ void fase2(void) {
                     if (i < 3) {
                         f2_mouseRangeButtons(i);
                         f2_powerFrames(i);
-
                     }
                     f2_mouseRangeCards(i);
                 }
@@ -191,8 +221,14 @@ void fase2(void) {
                 al_draw_bitmap(f2_cardText[1].card, f2_cardText[1].cardX, f2_cardText[1].cardY, 0);
             }
 
-             if (f2_mostraGuia) {
+            if (f2_mostraGuia) {
                 al_draw_bitmap(f2_guia[0].card, f2_guia[0].cardX, f2_guia[0].cardY, 0);
+            }
+
+            if (f2_mostraPause && f2_pauseContinuar) {
+                al_draw_bitmap(f2_pause[0].card, f2_pause[0].cardX, f2_pause[0].cardY, 0);
+            } else if (f2_mostraPause && f2_pauseMenu) {
+                al_draw_bitmap(f2_pause[1].card, f2_pause[1].cardX, f2_pause[1].cardY, 0);
             }
 
             al_draw_bitmap(cursor, f2_x, f2_y, 0);
@@ -452,6 +488,11 @@ void f2_destroyFase(void) {
 
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    // if (fase_tres_on == true)
-    //     fase3();
+    if (fase_tres_on == true) {
+        lucasleefinal();
+        final();
+    }
+    if (f2_menu_on == true) {
+        menu();
+    }
 }

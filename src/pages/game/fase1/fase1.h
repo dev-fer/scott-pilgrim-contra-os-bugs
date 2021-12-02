@@ -6,6 +6,7 @@ ALLEGRO_BITMAP *labirinto = NULL;
 ALLEGRO_EVENT event;
 
 bool fase_dois_on = false;
+bool menu_on = false;
 bool done = false;
 bool redraw = true;
 
@@ -19,6 +20,9 @@ bool resultado = false;
 bool mouseRangeCard = false;
 bool mouseRangeButton = false;
 bool mostraGuia = true;
+bool mostraPause = false;
+bool pauseContinuar = true;
+bool pauseMenu = false;
 
 float awaitAnimation = 700;
 float scottX = 474, scottY = 700;
@@ -41,6 +45,7 @@ MiniCard miniCards[4];
 EnemyCard enemyCards[4];
 Button buttons[3];
 Button power[3];
+CharacterCard pause[2];
 CharacterCard characterCards[4];
 CharacterCard cardText[2];
 CharacterCard guia[0];

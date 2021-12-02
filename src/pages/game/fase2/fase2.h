@@ -6,6 +6,7 @@ ALLEGRO_BITMAP *f2_labirinto = NULL;
 ALLEGRO_EVENT f2_event;
 
 bool fase_tres_on = false;
+bool f2_menu_on = false;
 bool f2_done = false;
 bool f2_redraw = true;
 
@@ -19,6 +20,9 @@ bool f2_resultado = false;
 bool f2_mouseRangeCard = false;
 bool f2_mouseRangeButton = false;
 bool f2_mostraGuia = false;
+bool f2_mostraPause = false;
+bool f2_pauseContinuar = true;
+bool f2_pauseMenu = false;
 
 float f2_awaitAnimation = 0;
 float f2_scottX = 596, f2_scottY = 626;
@@ -44,6 +48,7 @@ Button f2_power[3];
 CharacterCard f2_characterCards[4];
 CharacterCard f2_cardText[2];
 CharacterCard f2_guia[0];
+CharacterCard f2_pause[2];
 
 void f2_mouseMove(void);
 void f2_mouseRangeCards(int i);
