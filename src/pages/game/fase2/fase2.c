@@ -491,6 +491,7 @@ void f2_destroyFase(void) {
     if (fase_tres_on == true) {
         lucasleefinal();
         final();
+        menu();
     }
     if (f2_menu_on == true) {
         menu();
