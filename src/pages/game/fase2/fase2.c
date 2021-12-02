@@ -1,8 +1,8 @@
 #include "fase2.h"
 
 void fase2(void) {
-    mathewfinal();
-    lucasleeintro();
+    // mathewfinal();
+    // lucasleeintro();
 
     initialize();
 
@@ -398,7 +398,7 @@ void f2_animationsResult(void) {
         }
     }
 
-    if (f2_resultado && f2_contAnimacaoEnemy) {
+    if (f2_resultado && f2_continueAnimacaoBoss) {
         if (f2_contAnimacaoEnemy == 1) {
             f2_bossX -= 4;
         }
@@ -412,7 +412,7 @@ void f2_animationsResult(void) {
     }
 
     if (f2_bossY < 626 - 124 && f2_contAnimacaoEnemy == 2) {
-        f2_contAnimacaoEnemy = false;
+        f2_continueAnimacaoBoss = false;
         f2_contAnimacaoEnemy = 3;
     }
 }

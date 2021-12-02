@@ -1,8 +1,8 @@
 #include "fase1.h"
 
 void fase1(void) {
-    tutorial();
-    mathewintro();
+    // tutorial();
+    // mathewintro();
 
     initialize();
 
