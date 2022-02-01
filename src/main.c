@@ -2,8 +2,8 @@
 
 ALLEGRO_DISPLAY *display;
 ALLEGRO_MONITOR_INFO info;
-int width_display = 800;
-int height_display = 600;
+int width_display = 1920;
+int height_display = 1080;
 
 int verifyAllegroFunction(bool func, const char *message)
 {

@@ -6,6 +6,8 @@ add_executable(scott-pilgrim-contra-os-bugs)
 target_sources(
   scott-pilgrim-contra-os-bugs
   PRIVATE
+  src/config/construct.c
+  src/config/initialize.c
   src/pages/cutscenes/intro.c
   src/pages/cutscenes/mathewintro.c
   src/pages/cutscenes/mathewfinal.c
@@ -17,14 +19,11 @@ target_sources(
   src/pages/cutscenes/toddfinal.c
   src/pages/cutscenes/final.c
   src/pages/cutscenes/tutorial.c
-  src/pages/transition/end.c
   src/pages/menu/menu.c
   src/pages/menu/settings.c
   src/pages/game/fase1/fase1.c
   src/pages/game/fase2/fase2.c
-  src/pages/game/fase3/fase3.c
-  src/pages/game/fase4/fase4.c
-  src/pages/game/fase5/fase5.c
+#   src/pages/game/fase3/fase3.c
   src/main.c
 )
 

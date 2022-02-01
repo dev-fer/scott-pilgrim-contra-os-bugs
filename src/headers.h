@@ -12,7 +12,6 @@
 #include <allegro5\allegro_audio.h>
 
 // metodos principais
-void end(void);
 void fase1(void);
 void fase2(void);
 void fase3(void);
@@ -32,6 +31,7 @@ void final(void);
 void menu(void);
 void settings(int *cord_cursor_x, int *cord_cursor_y);
 int verifyAllegroFunction(bool func, const char *message);
+void initialize(void);
 
 void video_display_game(ALLEGRO_VIDEO *video);
 
@@ -84,6 +84,11 @@ Button create_button(char *urlButton, int maxFrame, int frameDelay, int frameWid
 #define fps 60
 extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_COLOR tint_color;
+extern ALLEGRO_TIMER *timer;
+extern ALLEGRO_EVENT_QUEUE *queue;
+extern ALLEGRO_BITMAP *bg;
+extern ALLEGRO_BITMAP *painel;
+extern ALLEGRO_BITMAP *cursor;
 extern int width_display;
 extern int height_display;
 extern int color[];

@@ -1,137 +1,17 @@
-#include "../../../headers.h"
-
-Card create_card(char *urlCard, int maxFrame, int frameDelay, int frameWidth, int frameHeight, int frameStartWidth, int frameStartHeight, int frameFinishWidth, int frameFinishHeight, float cardX, float cardY, char *urlMiniCard) {
-    Card c;
-    c.card = al_load_bitmap(urlCard);
-    verifyAllegroFunction(c.card, "image not found");
-    c.maxFrame = maxFrame;
-    c.currentFrame = 0;
-    c.frameCount = 0;
-    c.frameDelay = frameDelay;
-    c.frameWidth = frameWidth;
-    c.frameHeight = frameHeight;
-    c.frameStartWidth = frameStartWidth;
-    c.frameStartHeight = frameStartHeight;
-    c.frameFinishWidth = frameFinishWidth;
-    c.frameFinishHeight = frameFinishHeight;
-    c.cardX = cardX;
-    c.cardY = cardY;
-    c.urlMiniCard = urlMiniCard;
-    return c;
-}
-
-EnemyCard create_enemy_card(char *urlCard, float cardX, float cardY) {
-    EnemyCard ec;
-    ec.card = al_load_bitmap(urlCard);
-    verifyAllegroFunction(ec.card, "image not found");
-    ec.cardX = cardX;
-    ec.cardY = cardY;
-    return ec;
-}
-
-MiniCard create_mini_card(char *urlCard, float cardX, float cardY) {
-    MiniCard mc;
-    mc.card = al_load_bitmap(urlCard);
-    verifyAllegroFunction(mc.card, "image not found");
-    mc.cardX = cardX;
-    mc.cardY = cardY;
-    return mc;
-}
-
-CharacterCard create_character_card(char *urlCard, float cardX, float cardY) {
-    CharacterCard cc;
-    cc.card = al_load_bitmap(urlCard);
-    verifyAllegroFunction(cc.card, "image not found");
-    cc.cardX = cardX;
-    cc.cardY = cardY;
-    return cc;
-}
-
-Button create_button(char *urlButton, int maxFrame, int frameDelay, int frameWidth, int frameHeight, float buttonX, float buttonY) {
-    Button b;
-    b.button = al_load_bitmap(urlButton);
-    verifyAllegroFunction(b.button, "image not found");
-    b.maxFrame = maxFrame;
-    b.currentFrame = 0;
-    b.frameCount = 0;
-    b.frameDelay = frameDelay;
-    b.frameWidth = frameWidth;
-    b.frameHeight = frameHeight;
-    b.buttonX = buttonX;
-    b.buttonY = buttonY;
-    return b;
-}
+#include "fase1.h"
 
 void fase1(void) {
     tutorial();
     mathewintro();
-    verifyAllegroFunction(al_init(), "allegro");
-    verifyAllegroFunction(al_install_keyboard(), "keyboard");
-    verifyAllegroFunction(al_install_mouse(), "mouse");
 
-    ALLEGRO_TIMER *timer = al_create_timer(1.0 / 30.0);
-    verifyAllegroFunction(timer, "timer");
+    initialize();
 
-    ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
-    verifyAllegroFunction(queue, "queue");
-
-    bool fase_dois_on = false;
-
-    al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-    al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
-    al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
-
-    ALLEGRO_FONT *font = al_create_builtin_font();
-    verifyAllegroFunction(font, "font");
-
-    ALLEGRO_FONT *botao = al_load_ttf_font("../src/assets/fonts/joystix.ttf", 30, 0);
-
-    verifyAllegroFunction(al_init_image_addon(), "couldn't initialize image addon");
-    ALLEGRO_BITMAP *bg = al_load_bitmap("../src/assets/images/bg.jpg");
-    ALLEGRO_BITMAP *labirinto = al_load_bitmap("../src/assets/images/fase_um.png");
-    ALLEGRO_BITMAP *painel = al_load_bitmap("../src/assets/images/painel.png");
-    ALLEGRO_BITMAP *cursor = al_load_bitmap("../src/assets/images/cursor.png");
-
-    ALLEGRO_SAMPLE *themebackground = al_load_sample("../src/assets/sounds/Matthew.ogg");
-    ALLEGRO_SAMPLE_INSTANCE *music = al_create_sample_instance(themebackground);
+    themebackground = al_load_sample("../src/assets/sounds/Matthew.ogg");
+    music = al_create_sample_instance(themebackground);
     al_attach_sample_instance_to_mixer(music, al_get_default_mixer());
 
-    verifyAllegroFunction(bg, "couldn't initialize player");
-    verifyAllegroFunction(cursor, "couldn't initialize player");
-
-    verifyAllegroFunction(al_init_primitives_addon(), "primitives");
-
-    al_register_event_source(queue, al_get_keyboard_event_source());
-    al_register_event_source(queue, al_get_mouse_event_source());
-    al_register_event_source(queue, al_get_display_event_source(display));
-    al_register_event_source(queue, al_get_timer_event_source(timer));
-
-    bool done = false;
-    bool redraw = true;
-    bool active = true;
-    bool interatividadeCorrer = false;
-    bool interacaoCard = false;
-    bool interacaoButton = false;
-    // bool mostraGuia = true;
-    ALLEGRO_EVENT event;
-
-    float scottX, scottY, scottT;
-    scottX = 474;
-    scottY = 700;
-    scottT = 700;
-
-    float bossX, bossY;
-    bossX = 1498;
-    bossY = 576;
-
-    Card cards[4];
-    EnemyCard enemyCards[4];
-    MiniCard miniCards[4];
-    Button buttons[3];
-    CharacterCard characterCards[4];
-    CharacterCard cardText[2];
-    // CharacterCard guia[0];
-    Button power[2];
+    labirinto = al_load_bitmap("../src/assets/images/fase_um.png");
+    verifyAllegroFunction(labirinto, "couldn't initialize labirinto");
 
     cards[0] = create_card("../src/assets/images/correr_animacao.png", 21, 3, 247, 328, 16, 5, 35, 19, 440, 74, "../src/assets/images/minicard_correr.png");
     cards[1] = create_card("../src/assets/images/atacar_animacao.png", 30, 3, 374, 438, 61, 116, 116, 19, 642, -36, "../src/assets/images/minicard_atacar.png");
@@ -158,40 +38,16 @@ void fase1(void) {
     cardText[0] = create_character_card("../src/assets/images/next_level.png", 650, 323);
     cardText[1] = create_character_card("../src/assets/images/repeat_level.png", 650, 323);
 
-    // guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
+    guia[0] = create_character_card("../src/assets/images/guia.png", 0, 0);
 
-    int resultadoFase[3] = {0, 3, 1};
-    int respostaJogador[4];
-
-    float x, y;
-    x = 100;
-    y = 100;
-
-    bool resultado = false;
-    bool continueAnimacaoScott = true;
-    bool continueAnimacaoBoss = true;
-    bool travaCompilar = true;
-
-    int positionMiniCardX;
-    positionMiniCardX = 614;
-
-    int contMiniCard = 0;
-    int animacao = 0;
-    int animaboss = 0;
+    pause[0] = create_character_card("../src/assets/images/pause_continuar.png", 0, 0);
+    pause[1] = create_character_card("../src/assets/images/pause_menu.png", 0, 0);
 
 #define KEY_SEEN 1
 #define KEY_RELEASED 2
 
     unsigned char key[ALLEGRO_KEY_MAX];
     memset(key, 0, sizeof(key));
-
-    al_hide_mouse_cursor(display);
-
-    float dx, dy;
-    dx = 0;
-    dy = 0;
-
-    al_grab_mouse(display);
 
     al_start_timer(timer);
 
@@ -202,10 +58,38 @@ void fase1(void) {
         switch (event.type) {
             case ALLEGRO_EVENT_TIMER:
                 if (key[ALLEGRO_KEY_ESCAPE]) {
+                    if (!mostraPause) {
+                        mostraPause = true;
+                    }
+                }
+                if (key[ALLEGRO_KEY_DOWN]) {
+                      if (mostraPause && !pauseMenu) {
+                        pauseMenu = true;
+                        pauseContinuar = false;
+                    }
+                }
+                if (key[ALLEGRO_KEY_UP]) {
+                      if (mostraPause && !pauseContinuar) {
+                        pauseContinuar = true;
+                        pauseMenu = false;
+                    }
                 }
 
                 if (key[ALLEGRO_KEY_ENTER]) {
-                    if (resultado && animaboss == 6) {
+                    if (mostraPause && pauseContinuar) {
+                        mostraPause = false;
+                        break;
+                    }
+                    if (mostraPause && pauseMenu) {
+                        mostraPause = false;
+                        pauseMenu = false;
+                        pauseContinuar = true;
+                        done = true;
+                        menu_on = true;
+                        break;
+                    }
+
+                    if (resultado && contAnimacaoEnemy == 6) {
                         fase_dois_on = true;
                         done = true;
                         break;
@@ -227,184 +111,22 @@ void fase1(void) {
                     }
                 }
 
-                x += dx;
-                y += dy;
-
-                if (x < 0) {
-                    x *= -1;
-                    dx *= -1;
-                }
-                if (x > width_display) {
-                    x -= (x - width_display) * 2;
-                    dx *= -1;
-                }
-                if (y < 0) {
-                    y *= -1;
-                    dy *= -1;
-                }
-                if (y > height_display) {
-                    y -= (y - height_display) * 2;
-                    dy *= -1;
-                }
-
-                dx *= 0.9;
-                dy *= 0.9;
+                mouseMove();
 
                 for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
                     key[i] &= KEY_SEEN;
 
                 for (int i = 0; i < 4; i++) {
-                    bool mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
-
-                    if (mouseRangeCard && interacaoCard) {
-                        if (contMiniCard < 4) {
-                            miniCards[contMiniCard] = create_mini_card(cards[i].urlMiniCard, positionMiniCardX, 800);
-                            respostaJogador[contMiniCard] = i;
-                            positionMiniCardX += 192;
-                            contMiniCard++;
-                        }
-                        interacaoCard = false;
+                    if (i < 3) {
+                        mouseRangeButtons(i);
                     }
-
-                    if (mouseRangeCard) {
-                        if (++cards[i].frameCount >= cards[i].frameDelay) {
-                            if (++cards[i].currentFrame >= cards[i].maxFrame)
-                                cards[i].currentFrame = 0;
-
-                            cards[i].frameCount = 0;
-                        }
-                    } else {
-                        cards[i].currentFrame = 0;
-                        cards[i].frameCount = 0;
+                    if (i < 2) {
+                        powerFrames(i);
                     }
+                    mouseRangeCards(i);
                 }
 
-                for (int i = 0; i < 3; i++) {
-                    bool mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
-                    bool mouseRangeCompilar = buttons[0].buttonX && x >= buttons[0].buttonX && x <= (buttons[0].buttonX + buttons[0].frameWidth) && y >= buttons[0].buttonY && y <= (buttons[0].buttonY + buttons[0].frameHeight);
-                    bool mouseRangeResetar = buttons[1].buttonX && x >= buttons[1].buttonX && x <= (buttons[1].buttonX + buttons[1].frameWidth) && y >= buttons[1].buttonY && y <= (buttons[1].buttonY + buttons[1].frameHeight);
-                    // bool mouseRangeGuia = buttons[2].buttonX && x >= buttons[2].buttonX && x <= (buttons[2].buttonX + buttons[2].frameWidth) && y >= buttons[2].buttonY && y <= (buttons[2].buttonY + buttons[2].frameHeight);
-
-                    if (mouseRangeCompilar && interacaoButton && travaCompilar) {
-                        resultado = respostaJogador[0] == resultadoFase[0] && respostaJogador[1] == resultadoFase[1] && respostaJogador[2] == resultadoFase[2];
-                        interacaoButton = false;
-                        travaCompilar = false;
-                    }
-
-                    if (mouseRangeResetar && interacaoButton && contMiniCard > 0) {
-                        respostaJogador[0] = 0;
-                        respostaJogador[1] = 0;
-                        respostaJogador[2] = 0;
-                        contMiniCard = 0;
-                        positionMiniCardX = 614;
-
-                        for (int i = 0; i < contMiniCard; i++) {
-                            al_destroy_bitmap(miniCards[i].card);
-                        }
-
-                        interacaoButton = false;
-                        break;
-                    }
-
-                    // if (mouseRangeGuia && interacaoButton && !mostraGuia) {
-                    //     mostraGuia = true;
-                    //     interacaoButton = false;
-                    // }
-
-                    if (mouseRangeButton) {
-                        if (++buttons[i].frameCount >= buttons[i].frameDelay) {
-                            if (++buttons[i].currentFrame >= buttons[i].maxFrame)
-                                buttons[i].currentFrame = 0;
-
-                            buttons[i].frameCount = 0;
-                        }
-                    } else {
-                        buttons[i].currentFrame = 0;
-                        buttons[i].frameCount = 0;
-                    }
-                }
-
-                for (int i = 0; i < 2; i++) {
-                    if (++power[i].frameCount >= power[i].frameDelay && animaboss == 3 || ++power[i].frameCount >= power[i].frameDelay && animaboss == 5) {
-                        if (++power[i].currentFrame >= power[i].maxFrame)
-                            power[i].currentFrame = 0;
-
-                        power[i].frameCount = 0;
-                    }
-                }
-
-                if (resultado && continueAnimacaoScott) {
-                    if (animacao == 0) {
-                        scottY -= 4;
-                    } else if (animacao == 1) {
-                        scottX += 4;
-                    } else if (animacao == 2) {
-                        scottY -= 6;
-                    } else if (animacao == 3 && animaboss > 3) {
-                        scottY += 4;
-                    }
-                }
-
-                if (scottY < 700 - 128 && animacao == 0) {
-                    animacao = 1;
-                }
-
-                if (scottX > 474 + 128 * 3 && animacao == 1) {
-                    animacao = 2;
-                }
-
-                if (scottY < 700 - 124 * 2 && animacao == 2) {
-                    animacao = 3;
-                }
-
-                if (animaboss == 3) {
-                    scottT += 1;
-                    if (scottT > 870) {
-                        animaboss = 4;
-                    }
-                }
-
-                if (animaboss == 5) {
-                    scottT += 4;
-                    if (scottT > 900) {
-                        animaboss = 6;
-                    }
-                }
-
-                if (scottY > 570 && animacao == 3) {
-                    animacao = 4;
-                }
-
-                if (resultado && continueAnimacaoBoss) {
-                    // fase_dois_on = true;
-                    // done = true;
-                    if (animaboss == 0) {
-                        bossY -= 4;
-                    } else if (animaboss == 1) {
-                        bossX -= 4;
-                    } else if (animaboss == 2) {
-                        bossY += 4;
-                    } else if (animaboss == 4) {
-                        bossX -= 4;
-                    }
-                }
-
-                if (bossY < 576 - 128 && animaboss == 0) {
-                    animaboss = 1;
-                }
-
-                if (bossX < 1498 - 124 * 2 && animaboss == 1) {
-                    animaboss = 2;
-                }
-
-                if (bossY > 576 && animaboss == 2) {
-                    animaboss = 3;
-                }
-
-                if (bossX < 990 && animaboss == 4) {
-                    continueAnimacaoBoss = false;
-                    animaboss = 5;
-                }
+                animationsResult();
 
                 redraw = true;
                 break;
@@ -418,28 +140,19 @@ void fase1(void) {
                 bool mouseRangeCard = false;
                 bool mouseRangeButton = false;
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-                // if (mostraGuia) {
-                //     mostraGuia = false;
-                // }
-
                 for (int i = 0; i < 4; i++) {
-                    mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
-
-                    if (mouseRangeCard) {
-                        interacaoCard = true;
+                    bool resultRangeCard = mouseRangeUpCard(i);
+                    if (!resultRangeCard) {
                         break;
                     }
-                }
 
-                for (int i = 0; i < 3; i++) {
-                    mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
-
-                    if (mouseRangeButton) {
-                        interacaoButton = true;
-                        break;
+                    if (i < 3) {
+                        bool resultRangeButton = mouseRangeUpButton(i);
+                        if (!resultRangeButton) {
+                            break;
+                        }
                     }
                 }
-
                 break;
 
             case ALLEGRO_EVENT_KEY_DOWN:
@@ -467,12 +180,16 @@ void fase1(void) {
             al_draw_bitmap(painel, 75, 938, 0);
 
             for (int i = 0; i < 4; i++) {
+                if (i < 3) {
+                    al_draw_bitmap_region(buttons[i].button, buttons[i].currentFrame * buttons[i].frameWidth, 0, buttons[i].frameWidth, buttons[i].frameHeight, buttons[i].buttonX, buttons[i].buttonY, 0);
+                }
+
+                if (i < 2) {
+                    al_draw_bitmap(characterCards[i].card, characterCards[i].cardX, characterCards[i].cardY, 0);
+                }
+
                 al_draw_bitmap_region(cards[i].card, cards[i].currentFrame * cards[i].frameWidth, 0, cards[i].frameWidth, cards[i].frameHeight, cards[i].cardX, cards[i].cardY, 0);
                 al_draw_bitmap(enemyCards[i].card, enemyCards[i].cardX, enemyCards[i].cardY, 0);
-            }
-
-            for (int i = 0; i < 2; i++) {
-                al_draw_bitmap(characterCards[i].card, characterCards[i].cardX, characterCards[i].cardY, 0);
             }
 
             al_draw_bitmap(characterCards[2].card, scottX, scottY, 0);
@@ -484,30 +201,31 @@ void fase1(void) {
                 }
             }
 
-            for (int i = 0; i < 3; i++) {
-                al_draw_bitmap_region(buttons[i].button, buttons[i].currentFrame * buttons[i].frameWidth, 0, buttons[i].frameWidth, buttons[i].frameHeight, buttons[i].buttonX, buttons[i].buttonY, 0);
-            }
-
-            if (animaboss == 3) {
+            if (contAnimacaoEnemy == 3) {
                 al_draw_bitmap_region(power[0].button, power[0].currentFrame * power[0].frameWidth, 0, power[0].frameWidth, power[0].frameHeight, power[0].buttonX, power[0].buttonY, 0);
             }
 
-            if (animaboss == 5) {
+            if (contAnimacaoEnemy == 5) {
                 al_draw_bitmap_region(power[1].button, power[1].currentFrame * power[1].frameWidth, 0, power[1].frameWidth, power[1].frameHeight, power[1].buttonX, power[1].buttonY, 0);
             }
 
-            if (resultado && animaboss == 6) {
+            if (resultado && contAnimacaoEnemy == 6) {
                 al_draw_bitmap(cardText[0].card, cardText[0].cardX, cardText[0].cardY, 0);
             }
 
-              if (!resultado && !travaCompilar) {
+            if (!resultado && !travaCompilar) {
                 al_draw_bitmap(cardText[1].card, cardText[1].cardX, cardText[1].cardY, 0);
             }
 
-            // if(mostraGuia) {
-            // al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
+            if (mostraGuia) {
+                al_draw_bitmap(guia[0].card, guia[0].cardX, guia[0].cardY, 0);
+            }
 
-            // }
+            if (mostraPause && pauseContinuar) {
+                  al_draw_bitmap(pause[0].card, pause[0].cardX, pause[0].cardY, 0);
+            } else if (mostraPause && pauseMenu) {
+                  al_draw_bitmap(pause[1].card, pause[1].cardX, pause[1].cardY, 0);
+            }
 
             al_draw_bitmap(cursor, x, y, 0);
 
@@ -515,11 +233,225 @@ void fase1(void) {
 
             redraw = false;
         }
-
         al_set_sample_instance_playing(music, 1);
     }
+    destroyFase();
+}
 
+void mouseMove(void) {
+    x += dx;
+    y += dy;
+
+    if (x < 0) {
+        x *= -1;
+        dx *= -1;
+    }
+    if (x > width_display) {
+        x -= (x - width_display) * 2;
+        dx *= -1;
+    }
+    if (y < 0) {
+        y *= -1;
+        dy *= -1;
+    }
+    if (y > height_display) {
+        y -= (y - height_display) * 2;
+        dy *= -1;
+    }
+
+    dx *= 0.9;
+    dy *= 0.9;
+}
+
+void mouseRangeCards(int i) {
+    mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
+
+    if (mouseRangeCard && interacaoCard) {
+        if (contMiniCard < 4) {
+            miniCards[contMiniCard] = create_mini_card(cards[i].urlMiniCard, positionMiniCardX, 800);
+            respostaJogador[contMiniCard] = i;
+            positionMiniCardX += 192;
+            contMiniCard++;
+        }
+        interacaoCard = false;
+    }
+
+    if (mouseRangeCard) {
+        if (++cards[i].frameCount >= cards[i].frameDelay) {
+            if (++cards[i].currentFrame >= cards[i].maxFrame)
+                cards[i].currentFrame = 0;
+
+            cards[i].frameCount = 0;
+        }
+    } else {
+        cards[i].currentFrame = 0;
+        cards[i].frameCount = 0;
+    }
+}
+
+void mouseRangeButtons(int i) {
+    mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
+    bool mouseRangeCompilar = buttons[0].buttonX && x >= buttons[0].buttonX && x <= (buttons[0].buttonX + buttons[0].frameWidth) && y >= buttons[0].buttonY && y <= (buttons[0].buttonY + buttons[0].frameHeight);
+    bool mouseRangeResetar = buttons[1].buttonX && x >= buttons[1].buttonX && x <= (buttons[1].buttonX + buttons[1].frameWidth) && y >= buttons[1].buttonY && y <= (buttons[1].buttonY + buttons[1].frameHeight);
+    bool mouseRangeGuia = buttons[2].buttonX && x >= buttons[2].buttonX && x <= (buttons[2].buttonX + buttons[2].frameWidth) && y >= buttons[2].buttonY && y <= (buttons[2].buttonY + buttons[2].frameHeight);
+
+    if (mouseRangeCompilar && interacaoButton && travaCompilar) {
+        resultado = respostaJogador[0] == resultadoFase[0] && respostaJogador[1] == resultadoFase[1] && respostaJogador[2] == resultadoFase[2];
+        interacaoButton = false;
+        travaCompilar = false;
+    }
+
+    if (mouseRangeResetar && interacaoButton && contMiniCard > 0 && travaResetar) {
+        respostaJogador[0] = 0;
+        respostaJogador[1] = 0;
+        respostaJogador[2] = 0;
+        positionMiniCardX = 614;
+
+        for (int i = 0; i < contMiniCard; i++) {
+            al_destroy_bitmap(miniCards[i].card);
+        }
+
+        contMiniCard = 0;
+        interacaoButton = false;
+        travaResetar = false;
+    }
+
+    if (mouseRangeGuia && interacaoButton && !mostraGuia) {
+        interacaoButton = false;
+        mostraGuia = true;
+    }
+
+    if (mouseRangeButton) {
+        if (++buttons[i].frameCount >= buttons[i].frameDelay) {
+            if (++buttons[i].currentFrame >= buttons[i].maxFrame)
+                buttons[i].currentFrame = 0;
+
+            buttons[i].frameCount = 0;
+        }
+    } else {
+        buttons[i].currentFrame = 0;
+        buttons[i].frameCount = 0;
+    }
+}
+
+void powerFrames(int i) {
+    if (++power[i].frameCount >= power[i].frameDelay && contAnimacaoEnemy == 3 || ++power[i].frameCount >= power[i].frameDelay && contAnimacaoEnemy == 5) {
+        if (++power[i].currentFrame >= power[i].maxFrame)
+            power[i].currentFrame = 0;
+
+        power[i].frameCount = 0;
+    }
+}
+
+bool mouseRangeUpCard(int i) {
+    mouseRangeCard = x >= cards[i].cardX && x >= (cards[i].cardX + cards[i].frameStartWidth) && x <= (cards[i].cardX + cards[i].frameWidth - cards[i].frameFinishWidth) && y >= (cards[i].cardY + cards[i].frameStartHeight) && y <= (cards[i].cardY + cards[i].frameHeight - cards[i].frameFinishHeight);
+
+    if (mouseRangeCard) {
+        interacaoCard = true;
+        travaResetar = true;
+        return false;
+    }
+    return true;
+}
+
+bool mouseRangeUpButton(int i) {
+    mouseRangeButton = x >= buttons[i].buttonX && x >= buttons[i].buttonX && x <= (buttons[i].buttonX + buttons[i].frameWidth) && y >= buttons[i].buttonY && y <= (buttons[i].buttonY + buttons[i].frameHeight);
+
+    if (mostraGuia) {
+        mostraGuia = false;
+    }
+
+    if (mouseRangeButton) {
+        interacaoButton = true;
+        return false;
+    }
+    return true;
+}
+
+void animationsResult(void) {
+    if (resultado && continueAnimacaoScott) {
+        if (contAnimacaoScott == 0) {
+            scottY -= 4;
+        } else if (contAnimacaoScott == 1) {
+            scottX += 4;
+        } else if (contAnimacaoScott == 2) {
+            scottY -= 6;
+        } else if (contAnimacaoScott == 3 && contAnimacaoEnemy > 3) {
+            scottY += 4;
+        }
+    }
+
+    if (scottY < 700 - 128 && contAnimacaoScott == 0) {
+        contAnimacaoScott = 1;
+    }
+
+    if (scottX > 474 + 128 * 3 && contAnimacaoScott == 1) {
+        contAnimacaoScott = 2;
+    }
+
+    if (scottY < 700 - 124 * 2 && contAnimacaoScott == 2) {
+        contAnimacaoScott = 3;
+    }
+
+    if (contAnimacaoEnemy == 3) {
+        awaitAnimation += 1;
+        if (awaitAnimation > 870) {
+            contAnimacaoEnemy = 4;
+        }
+    }
+
+    if (contAnimacaoEnemy == 5) {
+        awaitAnimation += 4;
+        if (awaitAnimation > 900) {
+            contAnimacaoEnemy = 6;
+        }
+    }
+
+    if (scottY > 570 && contAnimacaoScott == 3) {
+        contAnimacaoScott = 4;
+    }
+
+    if (resultado && continueAnimacaoBoss) {
+        if (contAnimacaoEnemy == 0) {
+            bossY -= 4;
+        } else if (contAnimacaoEnemy == 1) {
+            bossX -= 4;
+        } else if (contAnimacaoEnemy == 2) {
+            bossY += 4;
+        } else if (contAnimacaoEnemy == 4) {
+            bossX -= 4;
+        }
+    }
+
+    if (bossY < 576 - 128 && contAnimacaoEnemy == 0) {
+        contAnimacaoEnemy = 1;
+    }
+
+    if (bossX < 1498 - 124 * 2 && contAnimacaoEnemy == 1) {
+        contAnimacaoEnemy = 2;
+    }
+
+    if (bossY > 576 && contAnimacaoEnemy == 2) {
+        contAnimacaoEnemy = 3;
+    }
+
+    if (bossX < 990 && contAnimacaoEnemy == 4) {
+        continueAnimacaoBoss = false;
+        contAnimacaoEnemy = 5;
+    }
+}
+
+void destroyFase(void) {
     for (int i = 0; i < 4; i++) {
+        if (i < 3) {
+            al_destroy_bitmap(buttons[i].button);
+        }
+
+        if (i < 2) {
+            al_destroy_bitmap(power[i].button);
+            al_destroy_bitmap(cardText[i].card);
+        }
+
         al_destroy_bitmap(cards[i].card);
         al_destroy_bitmap(enemyCards[i].card);
         al_destroy_bitmap(characterCards[i].card);
@@ -531,26 +463,20 @@ void fase1(void) {
         }
     }
 
-    for (int i = 0; i < 3; i++) {
-        al_destroy_bitmap(buttons[i].button);
-    }
-
-    for (int i = 0; i < 2; i++) {
-        al_destroy_bitmap(power[i].button);
-        al_destroy_bitmap(cardText[i].card);
-    }
-
     al_destroy_bitmap(bg);
     al_destroy_bitmap(labirinto);
     al_destroy_bitmap(painel);
     al_destroy_bitmap(cursor);
-    // al_destroy_bitmap(guia[0].card);
+    al_destroy_bitmap(guia[0].card);
 
     al_destroy_sample_instance(music);
 
-    al_destroy_font(font);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-    if (fase_dois_on == true)
+    if (fase_dois_on == true) {
         fase2();
+    }
+    if (menu_on == true) {
+        menu();
+    }
 }
